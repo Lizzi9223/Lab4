@@ -10,8 +10,8 @@ namespace Lab_4
     {
         static void Main(string[] args)
         {
-            Vector vect1 = new Vector(123,-56);
-            Vector vect2 = new Vector(2, 4);
+            Vector vect1 = new Vector(5, -8, -3, 9, 1);
+            Vector vect2 = new Vector(2, 4, 7, 0, 2);
             //Vector empt_vect = new Vector();
 
             Console.Write("vect1\t");

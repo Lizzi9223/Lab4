@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Lab_4
 {
@@ -10,15 +12,40 @@ namespace Lab_4
     {
         public int x;
         public int y;
+        public static int quant = 0;
+        public static double sum = 0;
+        public static double diff = 0;
+        public static double max = 0;
+        public static double min = Double.MaxValue;
 
         public Vector (int value1, int value2)
         {
             x = value1;
             y = value2;
+            StatisticOperation.Count(ref quant);
+            StatisticOperation.Sum(ref sum, this.length());
+            StatisticOperation.Diff(ref diff, ref min, ref max, this.length());
         }
-        public Vector()
+        public class Owner
         {
-           
+            public long id;
+            public string name;
+            public string organization;
+
+            public Owner(long i, string n, string o)
+            {
+                id = i;
+                name = n;
+                organization = o;
+            }
+        }
+        public class Date
+        {
+            DateTime date;
+            public Date(int year, int month, int day)
+            {
+                date = new DateTime(year, month, day);
+            }
         }
         public double length()
         {
@@ -69,6 +96,31 @@ namespace Lab_4
             int? check = one.x;
             if (check.HasValue) return true;
             else return false;
+        }
+    }
+    public static class StatisticOperation
+    {
+        public static void Count(ref int q)
+        {
+            q++;
+        }
+        public static void Sum(ref double sum, double l)
+        {
+            sum += l;
+        }
+        public static void Diff(ref double diff, ref double min, ref double max, double l)
+        {
+            if (l > max)
+            {
+                max = l;
+                diff = max - min;
+            }
+            if (l < min)
+            {
+                min = l;
+                diff = max - min;
+            }
+
         }
     }
 }

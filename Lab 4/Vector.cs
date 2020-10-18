@@ -10,11 +10,18 @@ namespace Lab_4
 {
     class Vector
     {
-        public int x1;
-        public int y1;
-        public int x2;
-        public int y2;
-        public sbyte direction;
+        public int[] coord = new int[5]; // [x1,y1,x2,y2,direction]
+        public int this[int index]
+        {
+            set
+            {
+                coord[index] = value;
+            }
+            get
+            {
+                return coord[index];
+            }
+        }
 
         public static int quant = 0;
         public static double sum = 0;
@@ -24,11 +31,11 @@ namespace Lab_4
 
         public Vector (int value1, int value2, int value3, int value4, sbyte d)
         {
-            x1 = value1;
-            y1 = value2;
-            x2 = value3;
-            y2 = value4;
-            direction = d;
+            coord[0] = value1;
+            coord[1] = value2;
+            coord[2] = value3;
+            coord[3] = value4;
+            coord[4] = d;
             StatisticOperation.Count(ref quant);
             StatisticOperation.Sum(ref sum, this.length());
             StatisticOperation.Diff(ref diff, ref min, ref max, this.length());
@@ -56,16 +63,16 @@ namespace Lab_4
         }
         public double length()
         {            
-            return Math.Sqrt(Math.Pow(Math.Abs(x1 - x2), 2) + Math.Pow(Math.Abs(y1 - y2), 2));
+            return Math.Sqrt(Math.Pow(Math.Abs(coord[0] - coord[2]), 2) + Math.Pow(Math.Abs(coord[1] - coord[3]), 2));
         }
         public void show()
         {
-            Console.WriteLine($"Координаты вектора : x1 = {x1}, y1 = {y1}, x2 = {x2}, y2 = {y2};\nНаправление вектора : {direction}; Длина вектора : {this.length()}\n");
+            Console.WriteLine($"Координаты вектора : x1 = {coord[0]}, y1 = {coord[1]}, x2 = {coord[2]}, y2 = {coord[3]};\nНаправление вектора : {coord[4]}; Длина вектора : {this.length()}\n");
         }
 
         public static Vector operator + (Vector one, Vector two)
         {
-            return new Vector(one.x1 + two.x1, one.y1 + two.y1, one.x2 + two.x2, one.y2 + two.y2, -1);
+            return new Vector(one.coord[0] + two.coord[0], one.coord[1] + two.coord[1], one.coord[2] + two.coord[2], one.coord[3] + two.coord[3], -1);
         }
 
         public static bool operator >(Vector one, Vector two)
@@ -79,21 +86,19 @@ namespace Lab_4
         //копирование вектора two в вектор one:
         public static Vector operator == (Vector one, Vector two)
         {
-            one.x1 = two.x1;
-            one.y1 = two.y1;
-            one.x2 = two.x2;
-            one.y2 = two.y2;
-            one.direction = two.direction;
+            for (byte i=0;i<one.coord.Length;i++)
+            {
+                one.coord[i] = two.coord[i];
+            }
             return one;
         }
         //копирование вектора two в вектор one:
         public static Vector operator !=(Vector one, Vector two)
         {
-            one.x1 = two.x1;
-            one.y1 = two.y1;
-            one.x2 = two.x2;
-            one.y2 = two.y2;
-            one.direction = two.direction;
+            for (byte i = 0; i < one.coord.Length; i++)
+            {
+                one.coord[i] = two.coord[i];
+            }
             return one;
         }
         //проверка пустой ли вектор
@@ -111,7 +116,7 @@ namespace Lab_4
         //    else return false;
         //}
     }
-    public static class StatisticOperation
+    static class StatisticOperation
     {
         public static void Count(ref int q)
         {
@@ -139,10 +144,11 @@ namespace Lab_4
         {
             s = s.Substring(1);
         }
-        //удаление положительных элементов из вектора
-        //public static void Del_plus (this Vector v)
-        //{
-
-        //}
+        //обнуление положительных элементов вектора
+        public static void Del_plus(this Vector v)
+        {
+            for (byte i = 0; i < v.coord.Length; i++)
+                if (v.coord[i] > 0) v.coord[i] = 0;
+        }
     }
 }

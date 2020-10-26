@@ -28,9 +28,10 @@ namespace Lab_4
         public static double diff = 0;
         public static double max = 0;
         public static double min = Double.MaxValue;
-
+                
         public Vector (int value1, int value2, int value3, int value4, sbyte d)
         {
+            //coord = new int[5];
             coord[0] = value1;
             coord[1] = value2;
             coord[2] = value3;
@@ -39,6 +40,10 @@ namespace Lab_4
             StatisticOperation.Count(ref quant);
             StatisticOperation.Sum(ref sum, this.length());
             StatisticOperation.Diff(ref diff, ref min, ref max, this.length());
+        }
+        public Vector ()
+        {
+
         }
         public class Owner
         {
@@ -62,7 +67,7 @@ namespace Lab_4
             }
         }
         public double length()
-        {            
+        {                        
             return Math.Sqrt(Math.Pow(Math.Abs(coord[0] - coord[2]), 2) + Math.Pow(Math.Abs(coord[1] - coord[3]), 2));
         }
         public void show()
@@ -102,19 +107,18 @@ namespace Lab_4
             return one;
         }
         //проверка пустой ли вектор
-        //public static bool operator true(Vector one)
-        //{
-        //    int? check = one.x1;
-        //    if (check.HasValue) return true;
-        //    else return false;
-        //}
-        ////проверка вектора на наличие значения
-        //public static bool operator false(Vector one)
-        //{
-        //    int? check = one.x1;
-        //    if (check.HasValue) return true;
-        //    else return false;
-        //}
+        public static bool operator true(Vector one)
+        {
+            if (one.length()>0) return true;
+            else return false;
+        }
+        //проверка вектора на наличие значения
+        public static bool operator false(Vector one)
+        {
+            int? check = one.coord[0];
+            if (check.HasValue) return true;
+            else return false;
+        }
     }
     static class StatisticOperation
     {
@@ -140,14 +144,15 @@ namespace Lab_4
             }
         }
         //усечение строки с начала
-        public static void Del_one_from_beg (this string s)
+        public static string Del_one_from_beg (this string s)
         {
-            s = s.Substring(1);
+            s = s.Remove(0, 1);
+            return s;
         }
         //обнуление положительных элементов вектора
         public static void Del_plus(this Vector v)
         {
-            for (byte i = 0; i < v.coord.Length; i++)
+            for (byte i = 0; i < v.coord.Length - 1; i++)
                 if (v.coord[i] > 0) v.coord[i] = 0;
         }
     }
